@@ -17,10 +17,12 @@
     "@types/react-dom": "18.2.7",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "modern-screenshot": "^4.4.28",
     "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "usehooks-ts": "^2.9.1"
   },
   "devDependencies": {
     "@pandacss/dev": "^0.9.0",
