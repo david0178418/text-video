@@ -67,8 +67,6 @@ export default function Foo() {
 						'This is a test.',
 						'Just a test...',
 						'...n\' stuff...',
-						'Just making a simple tool to more readily make this type text video from a web app.',
-						'If you\'re still reading this and want to follow along, then feel free to follow me (@JustDavidG).',
 					]}
 				/>
 			</div>
