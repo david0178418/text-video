@@ -38,8 +38,6 @@ export default function Foo() {
 	useInterval(async () => {
 		if(!canvasRef.current || !sourceRef.current) return;
 
-		console.log('recording');
-
 		// TODO: Is here a more efficient way to do this?
 		const canvas = await domToCanvas(sourceRef.current);
 		canvasRef.current.getContext('2d')?.drawImage(canvas, 0, 0);
