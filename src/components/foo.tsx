@@ -22,6 +22,17 @@ export default function Foo() {
 	useEffect(() => {
 		if(!canvasRef.current) return;
 
+		const stream = canvasRef.current?.captureStream(30);
+
+		const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+		console.log(1111);
+		recorder.addEventListener('dataavailable', (e) => {
+			console.log(e.data);
+		});
+		recorder.addEventListener('stop', () => {
+			console.log('stopped');
+		});
+		recorder.start();
 	}, []);
 
 	useInterval(async () => {
@@ -41,7 +52,8 @@ export default function Foo() {
 				className={css({
 					height,
 					width,
-					backgroundColor: 'lightgray',
+					color: '#f7f9f9',
+					backgroundColor: '#15202b',
 					fontSize: '16px',
 					textAlign: 'center',
 					display: 'flex',
@@ -52,12 +64,15 @@ export default function Foo() {
 			>
 				<RevealText
 					delay={delay}
-					onComplete={() => setIsRecording(false)}
-				>
-					foofoofoofoofoofoofoofoo foofoofoofoofoofoofoofoo
-					foofoofoofoofoofoofoofoo foofoofoofoofoofoofoofoo
-					foofoofoofoofoofoofoofoo foofoofoofoofoofoofoofoo
-				</RevealText>
+					onComplete={() => setTimeout(() => setIsRecording(false), 500)}
+					messages={[
+						'This is a test.',
+						'Just a test...',
+						'...n\' stuff...',
+						'Just making a simple tool to more readily make this type text video from a web app.',
+						'If you\'re still reading this and want to follow along, then feel free to follow me (@JustDavidG).',
+					]}
+				/>
 			</div>
 			<canvas
 				ref={canvasRef}
