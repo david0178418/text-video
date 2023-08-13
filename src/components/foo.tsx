@@ -36,10 +36,8 @@ export default function Foo() {
 		});
 
 		recorderRef.current.addEventListener('stop', () => {
-			const blob = new Blob(chunks, { type: 'video/mp4' });
-			const url = URL.createObjectURL(blob);
 			const a = document.createElement('a');
-			a.href = url;
+			a.href = URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' }));
 			a.download = 'proof-of-concept.mp4';
 			a.click();
 		});
