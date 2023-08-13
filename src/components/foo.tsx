@@ -13,7 +13,9 @@ import {
 
 export default function Foo() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 	const sourceRef = useRef<HTMLDivElement>(null);
+	const recorderRef = useRef<MediaRecorder | null>(null);
 	const [isRecording, setIsRecording] = useState(true);
 	const delay = 50;
 	const width = 512;
@@ -22,26 +24,46 @@ export default function Foo() {
 	useEffect(() => {
 		if(!canvasRef.current) return;
 
-		const stream = canvasRef.current?.captureStream(30);
+		ctxRef.current = canvasRef.current.getContext('2d');
+		const stream = canvasRef.current?.captureStream();
 
-		const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-		console.log(1111);
-		recorder.addEventListener('dataavailable', (e) => {
+		recorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264' });
+		const chunks: Blob[] = [];
+
+		recorderRef.current.addEventListener('dataavailable', (e) => {
 			console.log(e.data);
+			chunks.push(e.data);
 		});
-		recorder.addEventListener('stop', () => {
-			console.log('stopped');
+
+		recorderRef.current.addEventListener('stop', () => {
+			const blob = new Blob(chunks, { type: 'video/mp4' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'proof-of-concept.mp4';
+			a.click();
 		});
-		recorder.start();
+
+		recorderRef.current.start();
 	}, []);
 
 	useInterval(async () => {
-		if(!canvasRef.current || !sourceRef.current) return;
+		if(!canvasRef.current || !sourceRef.current || !ctxRef.current) return;
 
 		// TODO: Is here a more efficient way to do this?
 		const canvas = await domToCanvas(sourceRef.current);
-		canvasRef.current.getContext('2d')?.drawImage(canvas, 0, 0);
+		ctxRef.current.drawImage(canvas, 0, 0);
 	}, isRecording ? delay : null);
+
+	function handleRevealComplete() {
+		setIsRecording(false);
+
+		if(!recorderRef.current) {
+			return;
+		}
+
+		recorderRef.current.stop();
+	}
 
 	return (
 		<Center flexDir="column">
@@ -62,10 +84,11 @@ export default function Foo() {
 			>
 				<RevealText
 					delay={delay}
-					onComplete={() => setTimeout(() => setIsRecording(false), 500)}
+					// hack to catch the end of the animation
+					onComplete={() => setTimeout(handleRevealComplete, 100)}
 					messages={[
 						'This is a test.',
-						'Just a test...',
+						'Just a "proof of concept" test...',
 						'...n\' stuff...',
 					]}
 				/>
