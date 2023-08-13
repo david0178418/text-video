@@ -25,7 +25,7 @@ export default function Foo() {
 		if(!canvasRef.current) return;
 
 		ctxRef.current = canvasRef.current.getContext('2d');
-		const stream = canvasRef.current?.captureStream();
+		const stream = canvasRef.current.captureStream();
 
 		recorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264' });
 		const chunks: Blob[] = [];
