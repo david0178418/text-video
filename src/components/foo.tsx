@@ -1,11 +1,11 @@
 'use client';
 
 import { Center } from '@styled-system/jsx';
-import { domToCanvas } from 'modern-screenshot';
 import RevealText from './reveal-text';
 import { css } from '@styled-system/css';
 import fixWebmDuration from 'webm-duration-fix';
 import { useInterval } from 'usehooks-ts';
+import { toCanvas } from 'html-to-image';
 import {
 	useEffect,
 	useRef,
@@ -13,7 +13,6 @@ import {
 } from 'react';
 
 export default function Foo() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 	const sourceRef = useRef<HTMLDivElement>(null);
 	const recorderRef = useRef<MediaRecorder | null>(null);
@@ -23,10 +22,12 @@ export default function Foo() {
 	const height = 288 * 2;
 
 	useEffect(() => {
-		if(!canvasRef.current) return;
+		const targetCanvas = document.createElement('canvas');
+		targetCanvas.height = height;
+		targetCanvas.width = width;
 
-		ctxRef.current = canvasRef.current.getContext('2d');
-		const stream = canvasRef.current.captureStream();
+		ctxRef.current = targetCanvas.getContext('2d');
+		const stream = targetCanvas.captureStream();
 
 		recorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264' });
 		const chunks: Blob[] = [];
@@ -49,10 +50,10 @@ export default function Foo() {
 	}, []);
 
 	useInterval(async () => {
-		if(!canvasRef.current || !sourceRef.current || !ctxRef.current) return;
+		if(!sourceRef.current || !ctxRef.current) return;
 
 		// TODO: Is here a more efficient way to do this?
-		const canvas = await domToCanvas(sourceRef.current);
+		const canvas = await toCanvas(sourceRef.current);
 		ctxRef.current.drawImage(canvas, 0, 0);
 	}, isRecording ? delay : null);
 
@@ -96,12 +97,6 @@ export default function Foo() {
 					]}
 				/>
 			</div>
-			<canvas
-				ref={canvasRef}
-				height={height}
-				width={width}
-				className={css({ display: 'none' })}
-			/>
 		</Center>
 	);
 }
