@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useInterval, useTimeout } from 'usehooks-ts';
 
 interface Props {
 	messages: string[];
 	delay?: number;
+	endMessageDelay?: number;
 	intermessageDelay?: number;
 	onComplete?: () => void;
 }
@@ -15,6 +16,7 @@ function RevealText(props: Props) {
 		messages,
 		delay = 100,
 		intermessageDelay = 1500,
+		endMessageDelay = intermessageDelay * 2,
 		onComplete,
 	} = props;
 	const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
@@ -24,22 +26,22 @@ function RevealText(props: Props) {
 	const currentMessageIsPlaying = revealedCharacterCount < currentMessage.length;
 	const isPlaying = currentMessageIsPlaying || !isLastMessage;
 
-	useEffect(() => {
-		if(!isPlaying) onComplete?.();
-	}, [isPlaying]);
-
-	useInterval(
-		() => setRevealedCharacterCount(revealedCharacterCount + 1),
-		currentMessageIsPlaying ? delay : null,
-	);
+	useInterval(() => {
+		setRevealedCharacterCount(revealedCharacterCount + 1);
+	}, currentMessageIsPlaying ? delay : null);
 
 	useTimeout(() => {
 		if(isLastMessage) {
 			return;
 		}
+
 		setRevealedCharacterCount(0);
 		setCurrentMessageIndex(currentMessageIndex + 1);
 	}, !currentMessageIsPlaying ? intermessageDelay : null);
+
+	useTimeout(() => {
+		onComplete?.();
+	}, !isPlaying ? endMessageDelay : null);
 
 	return (
 		<>

@@ -87,13 +87,11 @@ export default function Foo() {
 				<RevealText
 					delay={delay}
 					// hack to catch the end of the animation with a little time padding for the last message
-					onComplete={() => setTimeout(handleRevealComplete, 2000)}
+					onComplete={handleRevealComplete}
 					messages={[
 						'Yet another test...',
 						'The first test required making a local pass with ffmpeg to properly set the duration of the video.',
 						'This video did not require that extra pass and was made entirely in the browser.',
-						'This means the proof-of-concept of the core idea is complete!',
-						'Now, I just need to slap a basic UI on this, get a domain, and deploy it.',
 					]}
 				/>
 			</div>
