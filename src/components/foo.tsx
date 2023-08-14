@@ -19,8 +19,8 @@ export default function Foo() {
 	const recorderRef = useRef<MediaRecorder | null>(null);
 	const [isRecording, setIsRecording] = useState(true);
 	const delay = 50;
-	const width = 512;
-	const height = 288;
+	const width = 512 * 2;
+	const height = 288 * 2;
 
 	useEffect(() => {
 		if(!canvasRef.current) return;
@@ -75,7 +75,7 @@ export default function Foo() {
 					width,
 					color: '#f7f9f9',
 					backgroundColor: '#15202b',
-					fontSize: '16px',
+					fontSize: '32px',
 					textAlign: 'center',
 					display: 'flex',
 					flexDirection: 'column',
@@ -100,7 +100,7 @@ export default function Foo() {
 				ref={canvasRef}
 				height={height}
 				width={width}
-				className={css({ border: '1px solid black' })}
+				className={css({ display: 'none' })}
 			/>
 		</Center>
 	);
