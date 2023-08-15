@@ -23,7 +23,7 @@ export default function RootLayout({ children }: {
 							fontSize: 48,
 							fontWeight: 'bold',
 						})}>
-							My Title
+							Text to Video
 						</div>
 					</Container>
 				</div>
