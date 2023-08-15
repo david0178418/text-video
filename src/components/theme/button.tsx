@@ -4,6 +4,7 @@ import { styled } from '@styled-system/jsx';
 // from https://preline.co/docs/buttons.html
 const buttonStyle = cva({
 	base: {
+		cursor: 'pointer',
 		paddingTop: 3,
 		paddingBottom: 3,
 		paddingLeft: 4,
