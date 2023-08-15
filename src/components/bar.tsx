@@ -36,7 +36,7 @@ function Bar(props: Props) {
 		targetCanvas.width = width;
 
 		ctxRef.current = targetCanvas.getContext('2d');
-		const stream = targetCanvas.captureStream();
+		const stream = targetCanvas.captureStream(60);
 
 		recorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264' });
 		const chunks: Blob[] = [];
