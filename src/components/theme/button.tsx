@@ -4,10 +4,12 @@ import { styled } from '@styled-system/jsx';
 // from https://preline.co/docs/buttons.html
 const buttonStyle = cva({
 	base: {
+		_disabled: { opacity: 0.5 },
 		_focus: {
-			outline: 'none',
-			outlineOffset: 'none',
 			boxShadow: '2',
+			outlineWidth: '2px',
+			outlineStyle: 'solid',
+			outlineColor: 'blue.500',
 		},
 		alignItems: 'center',
 		borderRadius: 'md',
@@ -26,7 +28,7 @@ const buttonStyle = cva({
 		transitionDuration: 'all',
 		transitionProperty: 'all',
 		transitionTimingFunction: 'all',
-		_disabled: { opacity: 0.5 },
+
 	},
 	variants: {
 		variant: {
