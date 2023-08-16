@@ -26,6 +26,7 @@ const buttonStyle = cva({
 		transitionDuration: 'all',
 		transitionProperty: 'all',
 		transitionTimingFunction: 'all',
+		_disabled: { opacity: 0.5 },
 	},
 	variants: {
 		variant: {

@@ -6,11 +6,13 @@ import { css } from '@styled-system/css';
 import Button from './theme/button';
 import Input from './theme/text-input';
 import { Center } from '@styled-system/jsx';
+import { isTruthy } from '@/common/utils';
 
 export default
 function Foo() {
 	const [messages, setMessages] = useState(['']);
 	const [started, setStarted] = useState(false);
+	const canGenerate = messages.length > 0 && messages.every(isTruthy);
 
 	function handleUpdateMessage(updatedMessage: string, index: number) {
 		const newMessages = [...messages];
@@ -29,7 +31,7 @@ function Foo() {
 			<Center>
 				<Button
 					variant="solid"
-					disabled={started}
+					disabled={!canGenerate || started}
 					onClick={() => setStarted(true)}
 					marginRight={10}
 				>
@@ -42,16 +44,18 @@ function Foo() {
 			{messages.map((message, i) => (
 				<div key={i}>
 					<Input
-						placeholder="Enter your name"
+						placeholder="Enter some text"
 						value={message}
 						onChange={(event) => handleUpdateMessage(event.target.value, i)}
 					/>
-					<Button
-						variant="ghost"
-						onClick={() => handleRemoveMessage(i)}
-					>
-						Remove
-					</Button>
+					{!!i && (
+						<Button
+							variant="ghost"
+							onClick={() => handleRemoveMessage(i)}
+						>
+							Remove
+						</Button>
+					)}
 				</div>
 			))}
 			{started && (

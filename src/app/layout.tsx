@@ -1,14 +1,15 @@
-import { Container } from '@styled-system/jsx';
 import './globals.css';
+
+import { Container } from '@styled-system/jsx';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { css } from '@styled-system/css';
+import H1 from '@/components/theme/h1';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-	title: 'Text to video',
-	description: 'Text to video',
+	title: 'SimpleVideoMaker',
+	description: 'Just a simple video maker.',
 };
 
 export default function RootLayout({ children }: {
@@ -17,16 +18,11 @@ export default function RootLayout({ children }: {
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<div className={css({ backgroundColor: 'darkgray' })}>
-					<Container>
-						<div className={css({
-							fontSize: 48,
-							fontWeight: 'bold',
-						})}>
-							Text to Video
-						</div>
-					</Container>
-				</div>
+				<Container paddingBottom={5}>
+					<H1>
+						Simple Video Maker
+					</H1>
+				</Container>
 				<Container>
 					{children}
 				</Container>
