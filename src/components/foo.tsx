@@ -55,6 +55,7 @@ function Foo() {
 					{!!i && (
 						<Button
 							variant="ghost"
+							color="red"
 							onClick={() => handleRemoveMessage(i)}
 						>
 							Remove
