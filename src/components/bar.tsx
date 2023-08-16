@@ -80,7 +80,9 @@ function Bar(props: Props) {
 	return (
 		<div
 			ref={sourceRef}
-			className={css({
+			className={css({ display: 'inline-block' }) }
+		>
+			<div className={css({
 				height,
 				width,
 				color: '#f7f9f9',
@@ -91,14 +93,27 @@ function Bar(props: Props) {
 				flexDirection: 'column',
 				justifyContent: 'center',
 				padding: '20px',
-			})}
-		>
-			<RevealText
-				delay={delay}
-				// hack to catch the end of the animation with a little time padding for the last message
-				onComplete={handleRevealComplete}
-				messages={messages}
-			/>
+			})}>
+				<RevealText
+					delay={delay}
+					// hack to catch the end of the animation with a little time padding for the last message
+					onComplete={handleRevealComplete}
+					messages={messages}
+				/>
+			</div>
+			<h2 className={css({
+				position: 'relative',
+				top: -8,
+				left: 5,
+				zIndex: 1,
+				fontSize: 24,
+				fontStyle: 'italic',
+				color: '#f7f9f9',
+				opacity: .8,
+				lineHeight: 0,
+			})}>
+				SimpleVideoMaker.com
+			</h2>
 		</div>
 	);
 }
