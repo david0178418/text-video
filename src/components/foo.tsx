@@ -5,7 +5,7 @@ import Bar from './bar';
 import { css } from '@styled-system/css';
 import Button from './theme/button';
 import Input from './theme/text-input';
-import { Center } from '@styled-system/jsx';
+import { Center, HStack } from '@styled-system/jsx';
 import { isTruthy } from '@/common/utils';
 
 export default
@@ -27,10 +27,14 @@ function Foo() {
 	}
 
 	return (
-		<div className={css({ paddingTop: 3 })}>
+		<div className={css({
+			paddingTop: 3,
+			width: 'full',
+		})}>
 			<Center>
 				<Button
 					variant="solid"
+					backgroundColor="green"
 					disabled={!canGenerate || started}
 					onClick={() => setStarted(true)}
 					marginRight={10}
@@ -38,11 +42,11 @@ function Foo() {
 					Generate
 				</Button>
 				<Button variant="solid" onClick={() => setMessages([...messages, ''])}>
-					Add
+					Add line
 				</Button>
 			</Center>
 			{messages.map((message, i) => (
-				<div key={i}>
+				<HStack key={i} paddingTop={3}>
 					<Input
 						placeholder="Enter some text"
 						value={message}
@@ -56,7 +60,7 @@ function Foo() {
 							Remove
 						</Button>
 					)}
-				</div>
+				</HStack>
 			))}
 			{started && (
 				<Bar
