@@ -34,6 +34,7 @@ function Bar(props: Props) {
 		const targetCanvas = document.createElement('canvas');
 		targetCanvas.height = height;
 		targetCanvas.width = width;
+		// document.body.appendChild(targetCanvas);
 
 		ctxRef.current = targetCanvas.getContext('2d');
 		const stream = targetCanvas.captureStream(60);
@@ -63,7 +64,7 @@ function Bar(props: Props) {
 
 		// TODO: Is here a more efficient way to do this?
 		const canvas = await toCanvas(sourceRef.current);
-		ctxRef.current.drawImage(canvas, 0, 0);
+		ctxRef.current.drawImage(canvas, 0, 0, width, height);
 	}, isRecording ? delay : null);
 
 	function handleRevealComplete() {
