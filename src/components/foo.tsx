@@ -7,6 +7,7 @@ import Button from './theme/button';
 import Input from './theme/text-input';
 import { Center, HStack } from '@styled-system/jsx';
 import { isTruthy } from '@/common/utils';
+import RevealText from './reveal-text';
 
 export default
 function Foo() {
@@ -64,10 +65,26 @@ function Foo() {
 				</HStack>
 			))}
 			{started && (
-				<Bar
-					onComplete={() => setStarted(false)}
-					messages={messages}
-				/>
+				<>
+					<Center
+						position="absolute"
+						top={0}
+						left={0}
+						width="screen"
+						height="screen"
+						backgroundColor="white"
+						zIndex={1000}
+					>
+						<RevealText
+							loop
+							messages={['Generating your video......']}
+						/>
+					</Center>
+					<Bar
+						onComplete={() => setStarted(false)}
+						messages={messages}
+					/>
+				</>
 			)}
 		</div>
 	);

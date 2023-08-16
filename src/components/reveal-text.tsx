@@ -4,6 +4,7 @@ import { useInterval, useTimeout } from 'usehooks-ts';
 
 interface Props {
 	messages: string[];
+	loop?: boolean;
 	delay?: number;
 	endMessageDelay?: number;
 	intermessageDelay?: number;
@@ -18,6 +19,7 @@ function RevealText(props: Props) {
 		intermessageDelay = 1500,
 		endMessageDelay = intermessageDelay * 2,
 		onComplete,
+		loop = false,
 	} = props;
 	const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 	const [revealedCharacterCount, setRevealedCharacterCount] = useState(0);
@@ -32,6 +34,10 @@ function RevealText(props: Props) {
 
 	useTimeout(() => {
 		if(isLastMessage) {
+			if(loop) {
+				setRevealedCharacterCount(0);
+				setCurrentMessageIndex(0);
+			}
 			return;
 		}
 
