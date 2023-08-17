@@ -26,9 +26,12 @@ function Bar(props: Props) {
 	const sourceRef = useRef<HTMLDivElement>(null);
 	const recorderRef = useRef<MediaRecorder | null>(null);
 	const [isRecording, setIsRecording] = useState(true);
-	const delay = 50;
-	const width = 512 * 2;
-	const height = 288 * 2;
+	// TODO Make configurable from UI
+	const fps = 60;
+	const delay = 1000 / fps;
+	const width = 1280;
+	const height = 720;
+	const mimeType = 'video/webm;codecs=h264';
 
 	useEffect(() => {
 		const targetCanvas = document.createElement('canvas');
@@ -37,9 +40,9 @@ function Bar(props: Props) {
 		// document.body.appendChild(targetCanvas);
 
 		ctxRef.current = targetCanvas.getContext('2d');
-		const stream = targetCanvas.captureStream(60);
+		const stream = targetCanvas.captureStream(delay);
 
-		recorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264' });
+		recorderRef.current = new MediaRecorder(stream, { mimeType });
 		const chunks: Blob[] = [];
 
 		recorderRef.current.addEventListener('dataavailable', (e) => {
@@ -48,7 +51,7 @@ function Bar(props: Props) {
 
 		recorderRef.current.addEventListener('stop', async () => {
 			const a = document.createElement('a');
-			const fixBlob = await fixWebmDuration(new Blob(chunks, { type: 'video/mp4' }));
+			const fixBlob = await fixWebmDuration(new Blob(chunks, { type: mimeType }));
 
 			a.href = URL.createObjectURL(fixBlob);
 			a.download = 'proof-of-concept.mp4';
