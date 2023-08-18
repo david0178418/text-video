@@ -28,9 +28,10 @@ function Bar(props: Props) {
 	const [isRecording, setIsRecording] = useState(true);
 	// TODO Make configurable from UI
 	const fps = 60;
-	const delay = 1000 / fps;
+	const frameDelay = 1000 / fps;
 	const width = 1280;
 	const height = 720;
+	const videoName = 'proof-of-concept';
 	const mimeType = 'video/webm;codecs=h264';
 
 	useEffect(() => {
@@ -40,7 +41,7 @@ function Bar(props: Props) {
 		// document.body.appendChild(targetCanvas);
 
 		ctxRef.current = targetCanvas.getContext('2d');
-		const stream = targetCanvas.captureStream(delay);
+		const stream = targetCanvas.captureStream(frameDelay);
 
 		recorderRef.current = new MediaRecorder(stream, { mimeType });
 		const chunks: Blob[] = [];
@@ -54,7 +55,7 @@ function Bar(props: Props) {
 			const fixBlob = await fixWebmDuration(new Blob(chunks, { type: mimeType }));
 
 			a.href = URL.createObjectURL(fixBlob);
-			a.download = 'proof-of-concept.mp4';
+			a.download = `${videoName}.mp4`;
 			a.click();
 			onComplete?.();
 		});
@@ -68,7 +69,7 @@ function Bar(props: Props) {
 		// TODO: Is here a more efficient way to do this?
 		const canvas = await toCanvas(sourceRef.current);
 		ctxRef.current.drawImage(canvas, 0, 0, width, height);
-	}, isRecording ? delay : null);
+	}, isRecording ? frameDelay : null);
 
 	function handleRevealComplete() {
 		setIsRecording(false);
@@ -98,7 +99,6 @@ function Bar(props: Props) {
 				padding: '20px',
 			})}>
 				<RevealText
-					delay={delay}
 					// hack to catch the end of the animation with a little time padding for the last message
 					onComplete={handleRevealComplete}
 					messages={messages}
