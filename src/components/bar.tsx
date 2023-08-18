@@ -91,7 +91,7 @@ function Bar(props: Props) {
 				width,
 				color: '#f7f9f9',
 				backgroundColor: '#15202b',
-				fontSize: '32px',
+				fontSize: '64px',
 				textAlign: 'center',
 				display: 'flex',
 				flexDirection: 'column',
